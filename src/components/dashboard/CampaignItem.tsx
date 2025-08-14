@@ -57,6 +57,7 @@ export const CampaignItem = ({
     if (!editName.trim()) return;
     
     onEditCampaign(campaign.id, editName, selectedIcon);
+    setEditName(campaign.name); // Reset para o valor atual
     setEditOpen(false);
   };
 
@@ -208,7 +209,7 @@ export const CampaignItem = ({
       </div>
 
       {campaign.metrics.length > 0 && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-2 mb-3">
           {campaign.metrics.map((metric) => (
             <MetricCard key={metric.id} metric={metric} variant="campaign" />
           ))}

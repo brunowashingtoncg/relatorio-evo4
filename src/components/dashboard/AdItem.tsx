@@ -28,12 +28,6 @@ export const AdItem = ({ ad, campaignId, adSetId, onDuplicate, onDelete, onEdit,
   const [editMetrics, setEditMetrics] = useState(ad.metrics);
   const [newMetric, setNewMetric] = useState({ name: '', value: 0, type: 'sum' as 'sum' | 'average' | 'percentage' });
 
-  const handleEditSubmit = () => {
-    if (!editName.trim()) return;
-    
-    onEdit(campaignId, adSetId, ad.id, editName);
-    setEditOpen(false);
-  };
 
   const handleMetricEdit = (metricId: string, name: string, value: number, type: 'sum' | 'average' | 'percentage') => {
     setEditMetrics(prev => prev.map(metric => 
@@ -53,7 +47,14 @@ export const AdItem = ({ ad, campaignId, adSetId, onDuplicate, onDelete, onEdit,
     setNewMetric({ name: '', value: 0, type: 'sum' });
   };
 
-  const handleSaveMetrics = () => {
+
+  const handleDialogSubmit = () => {
+    if (!editName.trim()) return;
+    
+    // Aplicar mudanças do nome
+    onEdit(campaignId, adSetId, ad.id, editName);
+    
+    // Aplicar mudanças das métricas
     editMetrics.forEach(metric => {
       const originalMetric = ad.metrics.find(m => m.id === metric.id);
       if (originalMetric && (
@@ -64,11 +65,8 @@ export const AdItem = ({ ad, campaignId, adSetId, onDuplicate, onDelete, onEdit,
         onEditMetric(campaignId, adSetId, ad.id, metric.id, metric.name, metric.value, metric.type);
       }
     });
-  };
-
-  const handleDialogSubmit = () => {
-    handleEditSubmit();
-    handleSaveMetrics();
+    
+    setEditOpen(false);
   };
   return (
     <div className="bg-ad/50 border border-warning/20 rounded-lg p-4 ml-8">
@@ -251,7 +249,7 @@ export const AdItem = ({ ad, campaignId, adSetId, onDuplicate, onDelete, onEdit,
       </div>
 
       {ad.metrics.length > 0 && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2">
           {ad.metrics.map((metric) => (
             <MetricCard key={metric.id} metric={metric} variant="ad" />
           ))}

@@ -27,15 +27,12 @@ export const MetricCard = ({ metric, variant = 'overview' }: MetricCardProps) =>
   };
 
   return (
-    <div className={`p-3 rounded-lg border shadow-card transition-smooth ${getVariantStyles()}`}>
-      <div className="text-xs font-medium text-muted-foreground mb-1">
+    <div className={`p-2 rounded-md border shadow-sm transition-smooth ${getVariantStyles()}`}>
+      <div className="text-xs font-medium text-muted-foreground mb-0.5 truncate">
         {metric.name}
       </div>
-      <div className="text-lg font-bold text-foreground">
+      <div className="text-sm font-bold text-foreground">
         {formatValue(metric.value, metric.type)}
-      </div>
-      <div className="text-xs text-muted-foreground capitalize">
-        {metric.type}
       </div>
     </div>
   );
