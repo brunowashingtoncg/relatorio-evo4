@@ -7,7 +7,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 
 interface AdItemProps {
@@ -27,6 +27,12 @@ export const AdItem = ({ ad, campaignId, adSetId, onDuplicate, onDelete, onEdit,
   const [editName, setEditName] = useState(ad.name);
   const [editMetrics, setEditMetrics] = useState(ad.metrics);
   const [newMetric, setNewMetric] = useState({ name: '', value: 0, type: 'sum' as 'sum' | 'average' | 'percentage' });
+
+  // Sincronizar estado local com props atualizadas
+  useEffect(() => {
+    setEditName(ad.name);
+    setEditMetrics(ad.metrics);
+  }, [ad.name, ad.metrics]);
 
 
   const handleMetricEdit = (metricId: string, name: string, value: number, type: 'sum' | 'average' | 'percentage') => {
