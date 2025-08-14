@@ -155,7 +155,7 @@ export const AdSetItem = ({
       )}
 
       {adSet.isExpanded && (
-        <div className="space-y-3">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
           {adSet.ads.map((ad) => (
             <AdItem
               key={ad.id}

@@ -69,66 +69,65 @@ export const AdItem = ({ ad, campaignId, adSetId, onDuplicate, onDelete, onEdit,
     setEditOpen(false);
   };
   return (
-    <div className="bg-ad/50 border border-warning/20 rounded-lg p-4 ml-8">
-      <div className="flex gap-4">
-        {/* Conteúdo principal - imagem e info */}
-        <div className="flex items-start gap-4 flex-1">
-          {ad.mediaUrl && (
-            <div className="w-24 h-24 rounded-lg overflow-hidden bg-muted border border-border shadow-card flex-shrink-0">
-              {ad.mediaType === 'video' ? (
-                <video 
-                  src={ad.mediaUrl}
-                  className="w-full h-full object-cover"
-                  muted
-                  preload="metadata"
-                />
-              ) : (
-                <img 
-                  src={ad.mediaUrl} 
-                  alt={ad.name}
-                  className="w-full h-full object-cover"
-                />
-              )}
+    <div className="bg-ad/50 border border-warning/20 rounded-lg p-3">
+      <div className="flex gap-3">
+        {/* Imagem maior */}
+        {ad.mediaUrl && (
+          <div className="w-32 h-32 rounded-lg overflow-hidden bg-muted border border-border shadow-card flex-shrink-0">
+            {ad.mediaType === 'video' ? (
+              <video 
+                src={ad.mediaUrl}
+                className="w-full h-full object-cover"
+                muted
+                preload="metadata"
+              />
+            ) : (
+              <img 
+                src={ad.mediaUrl} 
+                alt={ad.name}
+                className="w-full h-full object-cover"
+              />
+            )}
+          </div>
+        )}
+        
+        <div className="flex-1">
+          <div className="flex items-center justify-between">
+            <div>
+              <h4 className="font-semibold text-foreground">{ad.name}</h4>
+              <p className="text-sm text-muted-foreground">Anúncio</p>
             </div>
-          )}
-          <div className="flex-1">
-            <div className="flex items-center justify-between">
-              <div>
-                <h4 className="font-semibold text-foreground">{ad.name}</h4>
-                <p className="text-sm text-muted-foreground">Anúncio</p>
-              </div>
-              
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="sm">
-                    <MoreHorizontal className="w-4 h-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem onClick={() => setEditOpen(true)}>
-                    <Edit className="w-4 h-4 mr-2" />
-                    Editar Anúncio
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => onDuplicate(campaignId, adSetId, ad.id)}>
-                    <Copy className="w-4 h-4 mr-2" />
-                    Duplicar
-                  </DropdownMenuItem>
-                  <DropdownMenuItem 
-                    onClick={() => onDelete(campaignId, adSetId, ad.id)}
-                    className="text-destructive"
-                  >
-                    <Trash2 className="w-4 h-4 mr-2" />
-                    Excluir
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
+            
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm">
+                  <MoreHorizontal className="w-4 h-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => setEditOpen(true)}>
+                  <Edit className="w-4 h-4 mr-2" />
+                  Editar Anúncio
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => onDuplicate(campaignId, adSetId, ad.id)}>
+                  <Copy className="w-4 h-4 mr-2" />
+                  Duplicar
+                </DropdownMenuItem>
+                <DropdownMenuItem 
+                  onClick={() => onDelete(campaignId, adSetId, ad.id)}
+                  className="text-destructive"
+                >
+                  <Trash2 className="w-4 h-4 mr-2" />
+                  Excluir
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
 
-        {/* Métricas na lateral direita */}
+        {/* Métricas próximas à imagem */}
         {ad.metrics.length > 0 && (
-          <div className="flex flex-col gap-1 min-w-[140px]">
+          <div className="flex flex-col gap-1 min-w-[120px]">
             {ad.metrics.map((metric) => (
               <MetricCard key={metric.id} metric={metric} variant="ad" />
             ))}
