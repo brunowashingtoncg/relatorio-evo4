@@ -70,45 +70,71 @@ export const AdItem = ({ ad, campaignId, adSetId, onDuplicate, onDelete, onEdit,
   };
   return (
     <div className="bg-ad/50 border border-warning/20 rounded-lg p-4 ml-8">
-      <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center gap-3">
+      <div className="flex gap-4">
+        {/* Conteúdo principal - imagem e info */}
+        <div className="flex items-start gap-4 flex-1">
           {ad.mediaUrl && (
-            <MediaPreview 
-              mediaUrl={ad.mediaUrl}
-              mediaType={ad.mediaType || 'image'}
-              alt={ad.name}
-            />
+            <div className="w-24 h-24 rounded-lg overflow-hidden bg-muted border border-border shadow-card flex-shrink-0">
+              {ad.mediaType === 'video' ? (
+                <video 
+                  src={ad.mediaUrl}
+                  className="w-full h-full object-cover"
+                  muted
+                  preload="metadata"
+                />
+              ) : (
+                <img 
+                  src={ad.mediaUrl} 
+                  alt={ad.name}
+                  className="w-full h-full object-cover"
+                />
+              )}
+            </div>
           )}
-          <div>
-            <h4 className="font-semibold text-foreground">{ad.name}</h4>
-            <p className="text-sm text-muted-foreground">Anúncio</p>
+          <div className="flex-1">
+            <div className="flex items-center justify-between">
+              <div>
+                <h4 className="font-semibold text-foreground">{ad.name}</h4>
+                <p className="text-sm text-muted-foreground">Anúncio</p>
+              </div>
+              
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="sm">
+                    <MoreHorizontal className="w-4 h-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onClick={() => setEditOpen(true)}>
+                    <Edit className="w-4 h-4 mr-2" />
+                    Editar Anúncio
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => onDuplicate(campaignId, adSetId, ad.id)}>
+                    <Copy className="w-4 h-4 mr-2" />
+                    Duplicar
+                  </DropdownMenuItem>
+                  <DropdownMenuItem 
+                    onClick={() => onDelete(campaignId, adSetId, ad.id)}
+                    className="text-destructive"
+                  >
+                    <Trash2 className="w-4 h-4 mr-2" />
+                    Excluir
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
           </div>
         </div>
-        
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="sm">
-              <MoreHorizontal className="w-4 h-4" />
-            </Button>
-          </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => setEditOpen(true)}>
-                <Edit className="w-4 h-4 mr-2" />
-                Editar Anúncio
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => onDuplicate(campaignId, adSetId, ad.id)}>
-                <Copy className="w-4 h-4 mr-2" />
-                Duplicar
-              </DropdownMenuItem>
-            <DropdownMenuItem 
-              onClick={() => onDelete(campaignId, adSetId, ad.id)}
-              className="text-destructive"
-            >
-              <Trash2 className="w-4 h-4 mr-2" />
-              Excluir
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+
+        {/* Métricas na lateral direita */}
+        {ad.metrics.length > 0 && (
+          <div className="flex flex-col gap-1 min-w-[140px]">
+            {ad.metrics.map((metric) => (
+              <MetricCard key={metric.id} metric={metric} variant="ad" />
+            ))}
+          </div>
+        )}
+      </div>
 
         {/* Dialog de Edição */}
         <Dialog open={editOpen} onOpenChange={(open) => {
@@ -246,15 +272,6 @@ export const AdItem = ({ ad, campaignId, adSetId, onDuplicate, onDelete, onEdit,
             </div>
           </DialogContent>
         </Dialog>
-      </div>
-
-      {ad.metrics.length > 0 && (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2">
-          {ad.metrics.map((metric) => (
-            <MetricCard key={metric.id} metric={metric} variant="ad" />
-          ))}
-        </div>
-      )}
     </div>
   );
 };
